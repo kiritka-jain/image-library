@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import Images from './image';
 import axios from "axios";
 import {useState, useEffect} from 'react';
 
@@ -12,6 +13,7 @@ import {useState, useEffect} from 'react';
 export default function Album() {
 
   const [albums ,setAlbums]= useState([]);
+  const [selectedAlbumId ,setSelectedAlbumId] = useState(1);
 
   const fetchAlbums = async()=>{
     try{
@@ -29,7 +31,12 @@ export default function Album() {
 
   },[]);
 
+  const fetchImages = (albumId)=>{
+    setSelectedAlbumId(albumId);
+    
+  }
     return (
+      <Box className='album-container'>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'powderblue' }}>
       <nav aria-label="secondary mailbox folders">
         <List>
@@ -38,18 +45,18 @@ export default function Album() {
             <ListItemText No albums present />
           </ListItem>):(albums.map(album=>(
              <ListItem key={album.id}>
-             <ListItemButton>
+             <ListItemButton onClick={()=>{fetchImages(album.id)}}>
               <ListItemText primary={album.title} />
              </ListItemButton>
             </ListItem>
 
           ))
-         
-          )
-         
+          ) 
           }
         </List>
       </nav>
+    </Box>
+    <Images albumId={selectedAlbumId}/>
     </Box>
     );
   }
